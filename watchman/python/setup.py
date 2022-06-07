@@ -5,31 +5,14 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-
-import os
-
 try:
     from setuptools import Extension, setup
 except ImportError:
     from distutils.core import Extension, setup
 
-# Setuptools is very picky about the path on Windows. They have to be relative
-# paths, and on Windows that means we have to be on the same drive as the source
-# files. Otherwise it is impossible to obtain a relative path across different
-# drives. However this has an implication that we will not be able to build this
-# package outside the repository. Not great but it works.
-py_dir = os.path.join("watchman", "python")
-
-
-def srcs(names):
-    """transform a list of sources to be relative to py_dir"""
-    return ["%s/%s" % (py_dir, n) for n in names]
-
-
 setup(
     name="pywatchman",
     version="1.4.1",
-    package_dir={"": "pywatchman"},
     description="Watchman client for python",
     author="Wez Furlong, Rain",
     author_email="wez@fb.com",
@@ -40,7 +23,7 @@ setup(
     keywords=("watchman inotify fsevents kevent kqueue portfs filesystem watcher"),
     license="BSD",
     packages=["pywatchman"],
-    ext_modules=[Extension("pywatchman.bser", sources=srcs(["pywatchman/bser.c"]))],
+    ext_modules=[Extension("pywatchman.bser", sources=["pywatchman/bser.c"])],
     platforms="Platform Independent",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -56,12 +39,10 @@ setup(
         "Programming Language :: Python :: 3.6",
     ],
     zip_safe=True,
-    scripts=srcs(
-        [
-            "bin/watchman-make",
-            "bin/watchman-wait",
-            "bin/watchman-replicate-subscription",
-        ]
-    ),
+    scripts=[
+        "bin/watchman-make",
+        "bin/watchman-wait",
+        "bin/watchman-replicate-subscription",
+    ],
     test_suite="tests",
 )
