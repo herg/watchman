@@ -29,6 +29,7 @@ def srcs(names):
 setup(
     name="pywatchman",
     version="1.4.1",
+    package_dir={"": "pywatchman"},
     description="Watchman client for python",
     author="Wez Furlong, Rain",
     author_email="wez@fb.com",
